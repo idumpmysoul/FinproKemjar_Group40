@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # ============================================================================
+  # SERVICE 1: Login Portal (Partner's Project)
+  # ============================================================================
+  login_portal:
+    build:
+      context: ./login_portal
+      dockerfile: Dockerfile
+    container_name: login_portal_app
+    ports:
+      # -----------------------------------------------------------
+      # IMPORTANT: CHANGE "80" BELOW IF PARTNER USES NODE/VITE!
+      # Example for Vite: - "8000:5173" ; depends on partner's config
+      # Example for Node: - "8000:3000"
+      # -----------------------------------------------------------
+      - "8000:80"
+    networks:
+      - app_network
+    restart: unless-stopped
+    environment:
+      - SERVICE_NAME=login_portal
+      - ENVIRONMENT=development
+    # Healthcheck removed to prevent errors if 'curl' is missing in partner's image
+    
+  # ============================================================================
+  # SERVICE 2: Satellite Uplink (Your Project - CTF Challenge)
+  # ============================================================================
+  satellite_uplink:
+    build:
+      context: ./satellite_uplink
+      dockerfile: Dockerfile
+    container_name: satellite_uplink_app
+    ports:
+      - "8080:80"
+    networks:
+      - app_network
+    restart: unless-stopped
+    environment:
+      - SERVICE_NAME=satellite_uplink
+      - ENVIRONMENT=development
+
+# ============================================================================
+# NETWORKS
+# ============================================================================
+networks:
+  app_network:
+    driver: bridge
+    # Removed hardcoded subnet to avoid conflicts with University WiFi/VPNs

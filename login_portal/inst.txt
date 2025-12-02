@@ -1,0 +1,8 @@
+Yo, regarding the merge: Since we are using Docker Compose, you can use whatever tech stack you want (Vite, React, Node, PHP, etc.). Docker will handle the compatibility.
+I just need 3 things from you to make the connection work:
+Your Dockerfile: Make sure your folder has a working Dockerfile so I can build it.
+The Redirect: When the user successfully exploits the SQLi and logs in, please make your app redirect to http://localhost:8080.
+If you are using JS/Node/Vite: Use window.location.href = "http://localhost:8080"
+If you are using PHP: Use header("Location: http://localhost:8080")
+Your Internal Port: Let me know which port your app runs on inside the container (is it 3000? 5173? 80?). I need this to configure the network bridge.
+Once you have your folder ready, send it over, and I'll link it to my container!"
