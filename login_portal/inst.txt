@@ -1,8 +1,87 @@
-Yo, regarding the merge: Since we are using Docker Compose, you can use whatever tech stack you want (Vite, React, Node, PHP, etc.). Docker will handle the compatibility.
-I just need 3 things from you to make the connection work:
-Your Dockerfile: Make sure your folder has a working Dockerfile so I can build it.
-The Redirect: When the user successfully exploits the SQLi and logs in, please make your app redirect to http://localhost:8080.
-If you are using JS/Node/Vite: Use window.location.href = "http://localhost:8080"
-If you are using PHP: Use header("Location: http://localhost:8080")
-Your Internal Port: Let me know which port your app runs on inside the container (is it 3000? 5173? 80?). I need this to configure the network bridge.
-Once you have your folder ready, send it over, and I'll link it to my container!"
+Yo! I just set up a GitHub repository for our final project.
+
+I have a plan to make our presentation stand out to get max points on the "Technical" and "Presentation" criteria. Instead of showing two separate, disconnected websites, we are going to link them into one continuous "CTF" Story:
+
+Level 1 (Your Part): The attacker hacks the Login Portal using SQL Injection.
+
+Level 2 (My Part): Once they break in, they are forwarded to the internal "Satellite Uplink" system (my app) to finish the hack.
+
+I’ve already set up the Docker Compose automation in the repo to handle the networking. I just need you to follow these 4 steps to upload your part:
+
+1. The Repository
+
+I invited you to the repo (or clone it here: [INSERT GITHUB LINK HERE]).
+Please clone this to your laptop.
+
+2. Folder Structure (Important!)
+
+My automation looks for your code in a specific folder.
+
+Create a folder named login_portal inside the repository.
+
+Move all your project files (your Dockerfile, index.php or .js files, css, etc.) inside that folder.
+
+It should look like this:
+
+code
+Text
+download
+content_copy
+expand_less
+/Repo_Name
+  ├── docker-compose.yml  <-- (I made this already)
+  ├── satellite_uplink/   <-- (My code is here)
+  └── login_portal/       <-- (PUT YOUR CODE HERE)
+3. Add the "Redirect" (The Bridge)
+
+This is the only code change you need to make.
+Right now, when a user successfully logs in via SQL Injection, your app probably just shows "Welcome Admin".
+
+Please change that so it redirects to my app.
+
+If you are using PHP:
+Find your "Login Success" logic and add:
+
+code
+PHP
+download
+content_copy
+expand_less
+header("Location: http://localhost:8080");
+exit();
+
+If you are using JS/Node/React:
+Run this script on success:
+
+code
+JavaScript
+download
+content_copy
+expand_less
+window.location.href = "http://localhost:8080";
+
+(Note: Port 8080 is where my container will be running).
+
+4. Tell me your Port
+
+Check your Dockerfile. What port does your app listen on internally?
+
+Is it EXPOSE 80?
+
+Is it EXPOSE 3000?
+
+Is it EXPOSE 5173?
+
+Let me know this number so I can update the config file!
+
+Summary:
+
+Clone the repo.
+
+Put your files in the login_portal folder.
+
+Add the redirect code to http://localhost:8080.
+
+Commit & Push!
+
+Let me know when it's up!
