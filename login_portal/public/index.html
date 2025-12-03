@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login Portal (JS/React)</title>
+    <link rel="stylesheet" href="/index.css" />
+  </head>
+  <body>
+    <div id="root" class="terminal"></div>
+
+    <!-- React + Babel via CDN for a tiny demo (no build required) -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+
+    <script type="text/babel">
+      function App(){
+        const [username,setUsername] = React.useState('');
+        const [password,setPassword] = React.useState('');
+        const [msg,setMsg] = React.useState('');
+
+        async function submit(e){
+          e.preventDefault();
+          setMsg('Checking...');
+
+          try{
+            const res = await fetch('/login',{
+              method:'POST',
+              headers:{'Content-Type':'application/json'},
+              body: JSON.stringify({ username, password })
+            });
+            const j = await res.json();
+            if (j.success) {
+              window.location.href = 'http://localhost:8080';
+            } else {
+              setMsg(j.message || 'Login failed');
+            }
+          }catch(err){
+            setMsg('Network error');
+            console.error(err);
+          }
+        }
+
+        return (
+          <div>
+            <div className="terminal-header">
+              <div className="terminal-buttons">
+                <div className="btn-circle btn-red"></div>
+                <div className="btn-circle btn-yellow"></div>
+                <div className="btn-circle btn-green"></div>
+              </div>
+              <h1>☣ LOGIN PORTAL - ACCESS ☣</h1>
+            </div>
+
+            <div className="skull">💀 ☠️ 💀</div>
+
+            <div className="warning">
+              <strong>⚠ AUTH NOTICE ⚠</strong><br/>
+              This portal is part of the capture-the-flag scenario. Use known credentials or try an SQLi payload to progress.
+            </div>
+
+            <div className="status">>>> AUTH INTERFACE: ONLINE</div>
+
+            <form onSubmit={submit}>
+              <label>Username</label>
+              <input className="input-field" type="text" value={username} onChange={e=>setUsername(e.target.value)} placeholder="username" />
+              <label>Password</label>
+              <input className="input-field" type="password" value={password} onChange={e=>setPassword(e.target.value)} placeholder="password" />
+              <button type="submit">🔐 AUTHENTICATE</button>
+            </form>
+
+            <div className="msg">{msg}</div>
+
+            <div className="hint">
+              Try: <strong>admin / admin</strong> or an SQLi: <code>admin' OR '1'='1</code>
+            </div>
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+    </script>
+  </body>
+</html>
