@@ -22,12 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ip'])) {
     // ============================================================================
     // WHY: This is the PRIMARY defense. We only accept data that matches 
     // our exact specification - a valid IP address. This prevents ALL malicious
-    // input from ever reaching the system() call.
-    //
-    // FILTER_VALIDATE_IP ensures the input is a properly formatted IPv4 or IPv6 address.
-    // If validation fails, we reject the input entirely - no execution happens.
-    //
-    // This stops attacks like:
+    // input from ever reaching the system() call. FILTER_VALIDATE_IP ensures the input is a properly formatted IPv4 or IPv6 address.
+    // If validation fails, we reject the input entirely - no execution happens. This stops attacks like:
     // - "127.0.0.1; cat /flag.txt"
     // - "127.0.0.1 && ls -la"
     // - "127.0.0.1 | whoami"
@@ -60,9 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ip'])) {
         $command = "ping -c 4 " . $safe_ip;
         
         // ============================================================================
-        // DEFENSE LAYER 3: CONTROLLED EXECUTION
-        // ============================================================================
-        // We capture output safely and handle errors appropriately
+        // DEFENSE LAYER 3: CONTROLLED EXECUTION : We capture output safely and handle errors appropriately
         // ============================================================================
         
         ob_start();

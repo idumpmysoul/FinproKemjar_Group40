@@ -3,8 +3,8 @@ FROM php:8.1-apache
 # Set working directory
 WORKDIR /var/www/html
 
-# Copy the vulnerable application
-COPY index.php /var/www/html/index.php
+# Copy the vulnerable application -  now changed to secure version
+COPY index-SECURE.php /var/www/html/index.php 
 
 # Create the flag file
 RUN echo "FTUI{PHP_D3f3ns3_In_D3pth}" > /flag.txt && \
