@@ -1,11 +1,29 @@
 FROM php:8.1-apache
 
+# Set working directory
+WORKDIR /var/www/html
+
+# Copy the vulnerable application
+COPY index.php /var/www/html/index.php
+
+# Create the flag file
+RUN echo "FTUI{PHP_D3f3ns3_In_D3pth}" > /flag.txt && \
+    chmod 644 /flag.txt
+
+# Install utilities for command injection testing
+RUN apt-get update && \
+    apt-get install -y iputils-ping curl wget && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install PHP extensions
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-COPY . /var/www/html/
+# Set proper permissions
+RUN chown -R www-data:www-data /var/www/html && \
+    chmod 755 /var/www/html
 
-RUN chmod -R 755 /var/www/html/
-
+# Expose port 80
 EXPOSE 80
 
+# Start Apache
 CMD ["apache2-foreground"]

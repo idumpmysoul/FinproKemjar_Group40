@@ -19,7 +19,7 @@ app.post('/login', (req, res) => {
   const looksLikeSqli = lowered.includes(" or ") || lowered.includes("' or ") || lowered.includes(' or\'1\'=\'1');
 
   // Normal admin credentials (for convenience)
-  const okPlain = username === 'admin' && password === 'admin';
+  //const okPlain = username === 'admin' && password === 'admin';
 
   if (okPlain || looksLikeSqli) {
     return res.json({ success: true, message: 'Login success (simulated). Redirecting...' });
